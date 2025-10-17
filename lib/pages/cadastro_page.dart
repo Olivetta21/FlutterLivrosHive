@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../data/models/livro.dart';
+import '../data/repositories/estante.dart';
 
 class CadastroPage extends StatefulWidget {
   @override
@@ -7,11 +9,13 @@ class CadastroPage extends StatefulWidget {
 
 class _CadastroPageState extends State<CadastroPage> {  
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _authorController = TextEditingController();
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _titleController.dispose();
+    _authorController.dispose();
     super.dispose();
   }
 
@@ -24,11 +28,21 @@ class _CadastroPageState extends State<CadastroPage> {
         child: Column(
           children: [
             TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(labelText: 'Nome'),
+              controller: _titleController,
+              decoration: InputDecoration(labelText: 'Titulo'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Nome do Livro';
+                  return 'Titulo do Livro';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              controller: _authorController,
+              decoration: InputDecoration(labelText: 'Autor'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Autor do Livro';
                 }
                 return null;
               },
@@ -36,11 +50,22 @@ class _CadastroPageState extends State<CadastroPage> {
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
+                  final livro = Livro(
+                    _titleController.text,
+                    _authorController.text,
+                    0,
+                    '',
+                  );
+                  await Estante.addLivro(livro);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(
-                      'salvo: ${_nameController.text}'
+                      'salvo: ${livro.titulo} por ${livro.autor}'
                     )),
                   );
+
+                  _titleController.clear();
+                  _authorController.clear();
+                  Navigator.pop(context);
                 }
               },
               child: Text('Salvar'),

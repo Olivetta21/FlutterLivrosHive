@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../models/livro.dart';
+import '../data/models/livro.dart';
+import '../data/repositories/estante.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -8,8 +9,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> items = List.generate(50, (i) => "Item $i");
+  List<Livro> livros = [];
 
+  @override
+  void initState() {
+    super.initState();
+    _loadLivros();
+  }
+
+  Future<void> _loadLivros() async {
+    livros = await Estante.getLivros();
+    setState(() {});
+  }
 
   @override
   void dispose() {
@@ -44,14 +55,14 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: ListView.builder(
-        itemCount: items.length,
+        itemCount: livros.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(items[index]),
-            subtitle: Text("Detalhes do ${items[index]}"),
+            title: Text(livros[index].titulo),
+            subtitle: Text(livros[index].autor),
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Clicou no ${items[index]}')),
+                SnackBar(content: Text('Clicou no ${livros[index].titulo}')),
               );
             },
           );
