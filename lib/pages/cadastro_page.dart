@@ -23,11 +23,14 @@ class _CadastroPageState extends State<CadastroPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Cadastro de livro")),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
               controller: _titleController,
               decoration: InputDecoration(labelText: 'Titulo'),
               validator: (value) {
@@ -37,6 +40,7 @@ class _CadastroPageState extends State<CadastroPage> {
                 return null;
               },
             ),
+            const SizedBox(height: 16),
             TextFormField(
               controller: _authorController,
               decoration: InputDecoration(labelText: 'Autor'),
@@ -47,6 +51,7 @@ class _CadastroPageState extends State<CadastroPage> {
                 return null;
               },
             ),
+            const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
@@ -71,6 +76,7 @@ class _CadastroPageState extends State<CadastroPage> {
               child: Text('Salvar'),
             ),
           ],
+          ),
         ),
       ),
     );

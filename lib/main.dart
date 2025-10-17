@@ -4,6 +4,7 @@ import 'data/models/livro.dart';
 import 'pages/home_page.dart';
 import 'pages/cadastro_page.dart';
 import 'data/repositories/estante.dart';
+import 'core/theme/theme1.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: AppTheme.light,
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),

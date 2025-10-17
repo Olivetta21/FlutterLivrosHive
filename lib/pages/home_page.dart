@@ -50,7 +50,13 @@ class _HomePageState extends State<HomePage> {
             itemCount: livros.length,
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(livros[index].titulo),
+                title: Text(
+                    livros[index].titulo,
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 subtitle: Text(livros[index].autor),
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(
