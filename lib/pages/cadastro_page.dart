@@ -65,7 +65,7 @@ class _CadastroPageState extends State<CadastroPage> {
 
                   _titleController.clear();
                   _authorController.clear();
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/');
                 }
               },
               child: Text('Salvar'),

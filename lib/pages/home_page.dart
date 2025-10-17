@@ -8,19 +8,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  List<Livro> livros = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadLivros();
-  }
-
-  Future<void> _loadLivros() async {
-    livros = await Estante.getLivros();
-    setState(() {});
-  }
+class _HomePageState extends State<HomePage> {  
 
   @override
   void dispose() {
@@ -54,20 +42,32 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: ListView.builder(
-        itemCount: livros.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(livros[index].titulo),
-            subtitle: Text(livros[index].autor),
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Clicou no ${livros[index].titulo}')),
+      body: ValueListenableBuilder (
+        valueListenable: Hive.box<Livro>(Estante.boxName).listenable(),
+        builder: (context, box, _) {
+          final livros = box.values.toList();
+          return ListView.builder(
+            itemCount: livros.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(livros[index].titulo),
+                subtitle: Text(livros[index].autor),
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Clicou no ${livros[index].titulo}')),
+                  );
+                },
               );
             },
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.pushNamed(context, '/cadastro'),
+        child: const Icon(Icons.add),
+        tooltip: 'Cadastrar livro',
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
